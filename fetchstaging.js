@@ -40,6 +40,7 @@ function init() {
             
             var liste=document.querySelectorAll('.exercice');
             ;
+            console.log("la liste traitee est :",traitementListe(liste));
             injectHTML(traitementListe(liste));
        
           
