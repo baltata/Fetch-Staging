@@ -6,6 +6,8 @@ const url = `${base}&sheet=${sheetName}&tq=${query}`
 const data = []
 document.addEventListener('DOMContentLoaded', init)
 const output = document.querySelector('.output')
+console.log("output is :",output);
+console.log("url est :",url)
 function init() {
     fetch(url)
         .then(res => res.text())
