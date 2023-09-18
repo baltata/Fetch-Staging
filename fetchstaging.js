@@ -61,7 +61,7 @@ for (var i = 0, len = liste.length; i < len; i++) {
     var isThePageBeingEdited=document.querySelector("body").id;
     if (isThePageBeingEdited!="page-mod-book-edit"){
         var contenairexercice = liste[i].querySelector("iframe");
-        console.log("le container exercice est :",contenairexercice)
+        console.log("le container exercice est :",contenairexercice);
           contenairexercice.addEventListener("load",() => {
   var correction =contenairexercice.contentWindow.document.body.querySelector('.outcome');
               console.log("loutcome est :",correction);
