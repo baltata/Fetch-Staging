@@ -1,3 +1,5 @@
+////BIIiiitE
+
 const sheetId = '1y1PahGXnVrd0SQ4gYGKjLz7xaXh3BQbz8BI_9Il5Qaw';
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
 const sheetName = 'userdataStaging';
@@ -6,8 +8,8 @@ const url = `${base}&sheet=${sheetName}&tq=${query}`
 const data = []
 document.addEventListener('DOMContentLoaded', init)
 const output = document.querySelector('.output')
-console.log("output is :",output);
-console.log("url est :",url)
+console.log("output is :", output);
+console.log("url est :", url)
 function init() {
     fetch(url)
         .then(res => res.text())
@@ -27,7 +29,7 @@ function init() {
                     tr.appendChild(th);
                 }
             })
-         //   output.appendChild(tr);
+            //   output.appendChild(tr);
             //extract row data:
             jsonData.table.rows.forEach((rowData) => {
                 const row = {};
@@ -37,18 +39,18 @@ function init() {
                 data.push(row);
             })
             processRows(data);
-            
-            var liste=document.querySelectorAll('.exercice');
+
+            var liste = document.querySelectorAll('.exercice');
             ;
-            console.log("la liste traitee est :",traitementListe(liste));
+            console.log("la liste traitee est :", traitementListe(liste));
             injectHTML(traitementListe(liste));
-       
-          
-                
+
+
+
         })
 
 
-     
+
 
 
 
@@ -57,65 +59,72 @@ function init() {
 
 
 }
-function injectHTML (liste) {
-for (var i = 0, len = liste.length; i < len; i++) {
-    var isThePageBeingEdited=document.querySelector("body").id;
-    if (isThePageBeingEdited!="page-mod-book-edit"){
-        var iframe = liste[i].querySelector("iframe");
-        console.log("le iframe est :",iframe);
-         
-        
-  iframe.addEventListener("load",() => {
+function injectHTML(liste) {
+    for (var i = 0, len = liste.length; i < len; i++) {
+        var isThePageBeingEdited = document.querySelector("body").id;
+        if (isThePageBeingEdited != "page-mod-book-edit") {
+            var iframe = liste[i].querySelector("iframe");
+            console.log("le iframe est :", iframe);
 
- var correction =iframe.contentWindow.document.body.querySelector('.outcome');
-        console.log("le div de correction est :",correction);
-     
-   console.log("reload of the iframe");
-  correction.insertAdjacentHTML('beforeend',' <div class="blur" style="display:grid"> <div class="gosabonner">Cet exercice est réservé à nos utilisateurs premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')});
-  
+
+            iframe.addEventListener("load", () => {
+                const iframeElement = iframe; // Capturer la valeur de iframe dans une nouvelle variable
+                console.log("reload of the iframe");
+                
+                // Définir une fonction de portée fermée (closure) pour chaque iframe
+                (function (correction) {
+                    correction.insertAdjacentHTML('beforeend', '<div class="blur" style="display:grid"> <div class="gosabonner">Cet exercice est réservé à nos utilisateurs premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
+                })(iframeElement.contentWindow.document.body.querySelector('.outcome'));
+            });
+            
+            // Définir une fonction pour ajouter la div de correction avec le bon "correction"
+            function addPremiumMessage(correction) {
+                correction.insertAdjacentHTML('beforeend', '<div class="blur" style="display:grid"> <div class="gosabonner">Cet exercice est réservé à nos utilisateurs premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');     };
+
+        }
+    }
 }
-    }}
 
 
 
 
 
 
-function traitementListe (liste) {
+function traitementListe(liste) {
     var listeTraitee = [];
 
-    for (let i = 0; i<liste.length; i++) {
+    for (let i = 0; i < liste.length; i++) {
         var id = liste[i].id;
-       if (checkStatus(id)==1) {
-     listeTraitee.push(liste[i])
-       }
+        if (checkStatus(id) == 1) {
+            listeTraitee.push(liste[i])
+        }
     }
     console.log(listeTraitee)
     return listeTraitee
-    
+
 
 }
 
-function checkStatus (id) {
- // check the status of each exercice to see whether it is paying or not
- for (let i = 0; i < data.length; i++) {
-    if (data[i].id==id) {        
-         var retour = data[i].Payant
+function checkStatus(id) {
+    // check the status of each exercice to see whether it is paying or not
+    for (let i = 0; i < data.length; i++) {
+        if (data[i].id == id) {
+            var retour = data[i].Payant
         }
-      }
-      return retour;
+    }
+    return retour;
 }
- 
+
 function processRows(json) {
     json.forEach((row) => {
         const tr = document.createElement('tr');
         const keys = Object.keys(row);
-  
+
         keys.forEach((key) => {
             const td = document.createElement('td');
-          td.textContent = row[key];
+            td.textContent = row[key];
             tr.appendChild(td);
         })
-      //  output.appendChild(tr);
+        //  output.appendChild(tr);
     })
 }
