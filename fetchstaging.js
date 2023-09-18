@@ -70,7 +70,7 @@ for (var i = 0, len = liste.length; i < len; i++) {
   iframe.addEventListener("load",() => {
 
 
-   
+   console.log("reload of the iframe");
   correction.insertAdjacentHTML('beforeend',' <div class="blur" style="display:grid"> <div class="gosabonner">Cet exercice est réservé à nos utilisateurs premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')});
   
 }
