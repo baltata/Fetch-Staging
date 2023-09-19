@@ -61,7 +61,7 @@ function init() {
 }
 function injectHTML(liste) {
 
-
+///// FILL THE CORRECTIONS THAT ARE ALREADY DISPLAYED WHEN THE PAGE LOADS
     for (var i = 0, len = liste.length; i < len; i++) {
 
         var contenairexercice = document.querySelectorAll(".exercice iframe");
@@ -84,7 +84,7 @@ function injectHTML(liste) {
                         }
                     }};}
 
-
+////// ADD AN EVENT LISTENER TO DISPLAY THE BLUR WHEN IFRAMES LOAD
 
         for (var i = 0, len = liste.length; i < len; i++) {
             var isThePageBeingEdited = document.querySelector("body").id;
