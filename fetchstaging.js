@@ -60,30 +60,46 @@ function init() {
 
 }
 function injectHTML(liste) {
+
+
     for (var i = 0, len = liste.length; i < len; i++) {
-        var isThePageBeingEdited = document.querySelector("body").id;
-        if (isThePageBeingEdited != "page-mod-book-edit") {
-            var iframe = liste[i].querySelector("iframe");
-            console.log("le iframe est :", iframe);
 
 
-            iframe.addEventListener("load", () => {
-                const iframeElement = iframe; // Capturer la valeur de iframe dans une nouvelle variable
-                console.log("reload of the iframe");
-                
-                // Définir une fonction de portée fermée (closure) pour chaque iframe
-                (function (correction) {
-                    correction.insertAdjacentHTML('beforeend', '<div class="blur" style="display:grid"> <div class="gosabonner">Cet exercice est réservé à nos utilisateurs premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
-                })(iframeElement.contentWindow.document.body.querySelector('.outcome'));
-            });
-            
-            // Définir une fonction pour ajouter la div de correction avec le bon "correction"
-            function addPremiumMessage(correction) {
-                correction.insertAdjacentHTML('beforeend', '<div class="blur" style="display:grid"> <div class="gosabonner">Cet exercice est réservé à nos utilisateurs premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');     };
 
-        }
+
+
+        for (var i = 0, len = liste.length; i < len; i++) {
+            var isThePageBeingEdited = document.querySelector("body").id;
+            if (isThePageBeingEdited != "page-mod-book-edit") {
+                console.log("DEBUT DU SSSS");
+                var contenairexercice = document.querySelectorAll(".exercice iframe");
+                for (let iframe of contenairexercice) {
+
+                    iframe.addEventListener("load", () => {
+                        identifiantExercice = iframe.parentElement.id;
+                        if (checkStatus(identifiantExercice)) {
+                            if (iframe.contentWindow.document.body.querySelector('.outcome')) {
+                                
+
+
+
+                            var correction = iframe.contentWindow.document.body.querySelector('.outcome');
+                                    correction.insertAdjacentHTML('beforeend', ' <div class="blur" style="display:grid"> <div class="gosabonner">Cet exercice est réservé à nos utilisateurs premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')
+
+
+
+
+                                }
+                            }});}
+
+                }
+            }
+
+
+        };
+
     }
-}
+
 
 
 
@@ -99,7 +115,7 @@ function traitementListe(liste) {
             listeTraitee.push(liste[i])
         }
     }
-    console.log(listeTraitee)
+    console.log("la liste traitee est:", listeTraitee)
     return listeTraitee
 
 
