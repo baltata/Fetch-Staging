@@ -62,22 +62,23 @@ function init() {
 function injectHTML(liste) {
 
 ///// FILL THE CORRECTIONS THAT ARE ALREADY DISPLAYED WHEN THE PAGE LOADS
+let blurAdded = false;
     for (var i = 0, len = liste.length; i < len; i++) {
 
         var contenairexercice = document.querySelectorAll(".exercice iframe");
-        for (let iframe of contenairexercice) {
+        for (i = 0; i < contenairexercice.length; ++i) {
 
         
-                identifiantExercice = iframe.parentElement.id;
+                identifiantExercice = contenairexercice[i].parentElement.id;
                 if (checkStatus(identifiantExercice)) {
-                    if (iframe.contentWindow.document.body.querySelector('.outcome')) {
+                    if (contenairexercice[i].contentWindow.document.body.querySelector('.outcome')) {
                         
+                       
 
 
-
-                    var correction = iframe.contentWindow.document.body.querySelector('.outcome');
-                            correction.insertAdjacentHTML('beforeend', ' <div class="blur" style="display:grid"> <div class="gosabonner">Pour voir la <b>correction</b> ou <b>recommencer</b> un exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')
-
+                    var correction = contenairexercice[i].contentWindow.document.body.querySelector('.outcome');
+                            correction.insertAdjacentHTML('beforeend', ' <div class="blur" style="display:grid"> <div class="gosabonner">Pour voir la <b>correction</b> ou <b>recommencer</b> un exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
+                            blurAdded = false; 
 
 
 
