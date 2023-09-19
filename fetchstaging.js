@@ -64,7 +64,25 @@ function injectHTML(liste) {
 
     for (var i = 0, len = liste.length; i < len; i++) {
 
+        var contenairexercice = document.querySelectorAll(".exercice iframe");
+        for (let iframe of contenairexercice) {
 
+        
+                identifiantExercice = iframe.parentElement.id;
+                if (checkStatus(identifiantExercice)) {
+                    if (iframe.contentWindow.document.body.querySelector('.outcome')) {
+                        
+
+
+
+                    var correction = iframe.contentWindow.document.body.querySelector('.outcome');
+                            correction.insertAdjacentHTML('beforeend', ' <div class="blur" style="display:grid"> <div class="gosabonner">Pour voir la <b>correction</b> ou <b>recommencer</b> un exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')
+
+
+
+
+                        }
+                    }};}
 
 
 
@@ -98,7 +116,7 @@ function injectHTML(liste) {
 
         };
 
-    }
+    
 
 
 
