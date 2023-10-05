@@ -1,4 +1,4 @@
-////BIIiiitE
+
 
 const sheetId = '1y1PahGXnVrd0SQ4gYGKjLz7xaXh3BQbz8BI_9Il5Qaw';
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
@@ -60,13 +60,15 @@ function init() {
 
 }
 function injectHTML(liste) {
+    const exercicesAvecBlur = {};
+    const isblurred={};
 
 ///// FILL THE CORRECTIONS THAT ARE ALREADY DISPLAYED WHEN THE PAGE LOADS
-let blurAdded = false;
+
     for (var i = 0, len = liste.length; i < len; i++) {
 
         var contenairexercice = document.querySelectorAll(".exercice iframe");
-        for (i = 0; i < contenairexercice.length; ++i) {
+        for (let i = 0; i < contenairexercice.length; ++i) {
 
         
                 identifiantExercice = contenairexercice[i].parentElement.id;
@@ -77,8 +79,11 @@ let blurAdded = false;
 
 
                     var correction = contenairexercice[i].contentWindow.document.body.querySelector('.outcome');
+
+
+                    if (!exercicesAvecBlur[identifiantExercice]) {
                             correction.insertAdjacentHTML('beforeend', ' <div class="blur"> <div class="gosabonner">Pour voir la <b>correction</b> ou <b>recommencer</b> un exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
-                            blurAdded = false; 
+                            exercicesAvecBlur[identifiantExercice] = true;}
 
 
 
@@ -88,24 +93,25 @@ let blurAdded = false;
 ////// ADD AN EVENT LISTENER TO DISPLAY THE BLUR WHEN IFRAMES LOAD
 
         for (var i = 0, len = liste.length; i < len; i++) {
+           
             var isThePageBeingEdited = document.querySelector("body").id;
-            if (isThePageBeingEdited != "page-mod-book-edit") {
+            if (isThePageBeingEdited != "page-mod- book-edit") {
                 console.log("DEBUT DU SSSS");
                 var contenairexercice = document.querySelectorAll(".exercice iframe");
-                for (let iframe of contenairexercice) {
+                for (let i=0;i<contenairexercice.length;i++) {
 
-                    iframe.addEventListener("load", () => {
-                        identifiantExercice = iframe.parentElement.id;
+                    contenairexercice[i].addEventListener("load", () => {
+                        identifiantExercice = contenairexercice[i].parentElement.id;
                         if (checkStatus(identifiantExercice)) {
-                            if (iframe.contentWindow.document.body.querySelector('.outcome')) {
+                            if (contenairexercice[i].contentWindow.document.body.querySelector('.outcome')) {
                                 
 
+if (!isblurred[identifiantExercice]) {
 
-
-                            var correction = iframe.contentWindow.document.body.querySelector('.outcome');
+                            var correction = contenairexercice[i].contentWindow.document.body.querySelector('.outcome');
                                     correction.insertAdjacentHTML('beforeend', ' <div class="blur" style="display:grid"> <div class="gosabonner">Cet exercice est réservé à nos utilisateurs premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')
-
-
+                                    isblurred[identifiantExercice]=true;
+}
 
 
                                 }
