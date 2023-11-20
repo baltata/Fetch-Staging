@@ -1,22 +1,22 @@
 
-
-const sheetId = '1y1PahGXnVrd0SQ4gYGKjLz7xaXh3BQbz8BI_9Il5Qaw';
+console.log('testitest1');
+const sheetId = '1EceUR6V_uozN0fAkYTE_p9NHLIew8OBOI_Ab_10Z490';
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
-const sheetName = 'userdataStaging';
+const sheetName = 'user-data';
 const query = encodeURIComponent('Select *')
 const url = `${base}&sheet=${sheetName}&tq=${query}`
 const data = []
 document.addEventListener('DOMContentLoaded', init)
 const output = document.querySelector('.output')
-console.log("output is :", output);
-console.log("url est :", url)
+//console.log("output is :", output);
+//console.log("url est :", url)
 function init() {
     fetch(url)
         .then(res => res.text())
         .then(rep => {
             //Remove additional text and extract only JSON:
             const jsonData = JSON.parse(rep.substring(47).slice(0, -2));
-            console.log(rep)
+           // console.log(rep)
             const colz = [];
             const tr = document.createElement('tr');
             //Extract column labels
@@ -42,7 +42,7 @@ function init() {
 
             var liste = document.querySelectorAll('.exercice');
             ;
-            console.log("la liste traitee est :", traitementListe(liste));
+           // console.log("la liste traitee est :", traitementListe(liste));
             injectHTML(traitementListe(liste));
 
 
@@ -69,6 +69,7 @@ function injectHTML(liste) {
 
         var contenairexercice = document.querySelectorAll(".exercice iframe");
         for (let i = 0; i < contenairexercice.length; ++i) {
+            //console.log("contenairexercice[i] est :", contenairexercice[i])
 
         
                 identifiantExercice = contenairexercice[i].parentElement.id;
@@ -79,10 +80,12 @@ function injectHTML(liste) {
 
 
                     var correction = contenairexercice[i].contentWindow.document.body.querySelector('.outcome');
+                    console.log("correction est :", correction)
 
 
                     if (!exercicesAvecBlur[identifiantExercice]) {
-                            correction.insertAdjacentHTML('beforeend', ' <div class="blur"> <div class="gosabonner">Pour voir la <b>correction</b> ou <b>recommencer</b> un exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
+                        console.log("l'exercice est censé être flouté  :", correction)
+                            correction.insertAdjacentHTML('beforeend', ' <div class="blur"style="display:grid"> <div class="gosabonner">Pour voir cette <b>correction</b> ou <b>recommencer</b> cet exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
                             exercicesAvecBlur[identifiantExercice] = true;}
 
 
@@ -96,7 +99,7 @@ function injectHTML(liste) {
            
             var isThePageBeingEdited = document.querySelector("body").id;
             if (isThePageBeingEdited != "page-mod- book-edit") {
-                console.log("DEBUT DU SSSS");
+            //    console.log("DEBUT DU SSSS");
                 var contenairexercice = document.querySelectorAll(".exercice iframe");
                 for (let i=0;i<contenairexercice.length;i++) {
 
@@ -109,7 +112,7 @@ function injectHTML(liste) {
 if (!isblurred[identifiantExercice]) {
 
                             var correction = contenairexercice[i].contentWindow.document.body.querySelector('.outcome');
-                                    correction.insertAdjacentHTML('beforeend', ' <div class="blur" style="display:grid"> <div class="gosabonner">Cet exercice est réservé à nos utilisateurs premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')
+                                    correction.insertAdjacentHTML('beforeend', ' <div class="blur"style="display:grid"> <div class="gosabonner">Pour voir cette <b>correction</b> ou <b>recommencer</b> cet exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')
                                     isblurred[identifiantExercice]=true;
 }
 
@@ -140,7 +143,7 @@ function traitementListe(liste) {
             listeTraitee.push(liste[i])
         }
     }
-    console.log("la liste traitee est:", listeTraitee)
+   // console.log("la liste traitee est:", listeTraitee)
     return listeTraitee
 
 
