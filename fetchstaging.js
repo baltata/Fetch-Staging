@@ -1,5 +1,5 @@
 
-console.log('testitest1');
+console.log('testitest2');
 const sheetId = '1EceUR6V_uozN0fAkYTE_p9NHLIew8OBOI_Ab_10Z490';
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
 const sheetName = 'user-data';
@@ -63,7 +63,24 @@ function injectHTML(liste) {
     const exercicesAvecBlur = {};
     const isblurred={};
 
-///// FILL THE CORRECTIONS THAT ARE ALREADY DISPLAYED WHEN THE PAGE LOADS
+    // fill the fiches that are already displayed when the page loads
+    var fiche = document.querySelectorAll(".fiche");
+    for (let i = 0; i < fiche.length; ++i) {
+        identifiantFiche = fiche[i].id;
+        console.log("identifiantFiche est :", identifiantFiche)
+        console.log("checkStatus(identifiantFiche) est :", checkStatus(identifiantFiche))
+        if (checkStatus(identifiantFiche)) {
+            
+                fiche[i].insertAdjacentHTML('beforeend', ' <div class="blur"style="display:grid"> <div class="gosabonner">Pour voir cette <b>fiche</b> il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
+                exercicesAvecBlur[identifiantFiche] = true;
+            
+        }
+    }
+
+
+
+
+    ///// FILL THE CORRECTIONS THAT ARE ALREADY DISPLAYED WHEN THE PAGE LOADS
 
     for (var i = 0, len = liste.length; i < len; i++) {
 
