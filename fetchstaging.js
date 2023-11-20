@@ -1,5 +1,5 @@
 
-console.log('testitest2');
+console.log('testitest3');
 const sheetId = '1EceUR6V_uozN0fAkYTE_p9NHLIew8OBOI_Ab_10Z490';
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
 const sheetName = 'user-data';
@@ -10,6 +10,11 @@ document.addEventListener('DOMContentLoaded', init)
 const output = document.querySelector('.output')
 //console.log("output is :", output);
 //console.log("url est :", url)
+
+
+
+
+
 function init() {
     fetch(url)
         .then(res => res.text())
@@ -42,8 +47,11 @@ function init() {
 
             var liste = document.querySelectorAll('.exercice');
             ;
-           // console.log("la liste traitee est :", traitementListe(liste));
-            injectHTML(traitementListe(liste));
+            console.log("la liste traitee est :", traitementListe(liste));
+
+            if (!document.body.classList.contains('paying')) {
+console.log("je suis dans le if")
+            injectHTML(traitementListe(liste));}
 
 
 
@@ -71,7 +79,7 @@ function injectHTML(liste) {
         console.log("checkStatus(identifiantFiche) est :", checkStatus(identifiantFiche))
         if (checkStatus(identifiantFiche)) {
             
-                fiche[i].insertAdjacentHTML('beforeend', ' <div class="blur"style="display:grid"> <div class="gosabonner">Pour voir cette <b>fiche</b> il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
+                fiche[i].insertAdjacentHTML('beforeend', ' <div class="blur"> <div class="gosabonner">Pour voir cette <b>fiche</b> il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
                 exercicesAvecBlur[identifiantFiche] = true;
             
         }
@@ -102,7 +110,7 @@ function injectHTML(liste) {
 
                     if (!exercicesAvecBlur[identifiantExercice]) {
                         console.log("l'exercice est censé être flouté  :", correction)
-                            correction.insertAdjacentHTML('beforeend', ' <div class="blur"style="display:grid"> <div class="gosabonner">Pour voir cette <b>correction</b> ou <b>recommencer</b> cet exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
+                            correction.insertAdjacentHTML('beforeend', ' <div class="blur"> <div class="gosabonner">Pour voir cette <b>correction</b> ou <b>recommencer</b> cet exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
                             exercicesAvecBlur[identifiantExercice] = true;}
 
 
@@ -129,7 +137,7 @@ function injectHTML(liste) {
 if (!isblurred[identifiantExercice]) {
 
                             var correction = contenairexercice[i].contentWindow.document.body.querySelector('.outcome');
-                                    correction.insertAdjacentHTML('beforeend', ' <div class="blur"style="display:grid"> <div class="gosabonner">Pour voir cette <b>correction</b> ou <b>recommencer</b> cet exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')
+                                    correction.insertAdjacentHTML('beforeend', ' <div class="blur"> <div class="gosabonner">Pour voir cette <b>correction</b> ou <b>recommencer</b> cet exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')
                                     isblurred[identifiantExercice]=true;
 }
 
@@ -189,3 +197,4 @@ function processRows(json) {
         //  output.appendChild(tr);
     })
 }
+//}
