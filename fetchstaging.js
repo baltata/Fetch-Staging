@@ -1,5 +1,5 @@
 
-console.log('testitest3');
+console.log('test6');
 const sheetId = '1EceUR6V_uozN0fAkYTE_p9NHLIew8OBOI_Ab_10Z490';
 const base = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?`;
 const sheetName = 'user-data';
@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', init)
 const output = document.querySelector('.output')
 //console.log("output is :", output);
 //console.log("url est :", url)
+
 
 
 
@@ -48,9 +49,13 @@ function init() {
             var liste = document.querySelectorAll('.exercice');
             ;
             console.log("la liste traitee est :", traitementListe(liste));
+           
+            console.log('la classlist du document est :',document.body.classList.value)
+            console.log('la classlist du document contient paying :',document.body.classList.value.includes('paying'))
 
-            if (!document.body.classList.contains('paying')) {
-console.log("je suis dans le if")
+            if (document.body.classList.value.includes('paying')===false) {
+               // console.log("la condition est:",document.body.classList.contains("paying")===false)
+//console.log("je suis dans le if")
             injectHTML(traitementListe(liste));}
 
 
@@ -59,6 +64,41 @@ console.log("je suis dans le if")
 
 
 
+        //function that display none all the blurs
+function displayNone() {
+    //select all the blur that ar within iframes
+    var contenairexercice = document.querySelectorAll(".exercice iframe");
+
+    for (let i = 0; i < contenairexercice.length; ++i) {
+        var blur = contenairexercice[i].contentWindow.document.body.querySelectorAll(".blur");
+       // console.log('les blur à virer sont :', blur)
+        for (let i = 0; i < blur.length; ++i) {
+            blur[i].style.display = "none";
+        }
+    
+
+    
+    
+    }
+}
+// Mutation observer callback function for changes in the body class
+const classChangeCallback = function(mutationsList, observer) {
+    //console.log('Mutation observed in body class');
+    for (const mutation of mutationsList) {
+        if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+            const bodyClassList = document.body.classList;
+            if (bodyClassList.contains('paying')) {
+                //console.log('Class "paying" detected');
+                displayNone(); // Call the function when "paying" class is added
+                observer.disconnect(); // Disconnect the observer after triggering the function
+            }
+        }
+    }
+};
+
+// Mutation observer for changes in attributes of the body element
+const bodyObserver = new MutationObserver(classChangeCallback);
+bodyObserver.observe(document.body, { attributes: true });
 
 
 
@@ -67,6 +107,9 @@ console.log("je suis dans le if")
 
 
 }
+
+
+
 function injectHTML(liste) {
     const exercicesAvecBlur = {};
     const isblurred={};
@@ -75,8 +118,8 @@ function injectHTML(liste) {
     var fiche = document.querySelectorAll(".fiche");
     for (let i = 0; i < fiche.length; ++i) {
         identifiantFiche = fiche[i].id;
-        console.log("identifiantFiche est :", identifiantFiche)
-        console.log("checkStatus(identifiantFiche) est :", checkStatus(identifiantFiche))
+        //console.log("identifiantFiche est :", identifiantFiche)
+        //console.log("checkStatus(identifiantFiche) est :", checkStatus(identifiantFiche))
         if (checkStatus(identifiantFiche)) {
             
                 fiche[i].insertAdjacentHTML('beforeend', ' <div class="blur"> <div class="gosabonner">Pour voir cette <b>fiche</b> il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
@@ -105,11 +148,11 @@ function injectHTML(liste) {
 
 
                     var correction = contenairexercice[i].contentWindow.document.body.querySelector('.outcome');
-                    console.log("correction est :", correction)
+                   // console.log("correction est :", correction)
 
 
                     if (!exercicesAvecBlur[identifiantExercice]) {
-                        console.log("l'exercice est censé être flouté  :", correction)
+                        //console.log("l'exercice est censé être flouté  :", correction)
                             correction.insertAdjacentHTML('beforeend', ' <div class="blur"> <div class="gosabonner">Pour voir cette <b>correction</b> ou <b>recommencer</b> cet exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
                             exercicesAvecBlur[identifiantExercice] = true;}
 
@@ -130,7 +173,7 @@ function injectHTML(liste) {
 
                     contenairexercice[i].addEventListener("load", () => {
                         identifiantExercice = contenairexercice[i].parentElement.id;
-                        if (checkStatus(identifiantExercice)) {
+                        if (checkStatus(identifiantExercice) && document.body.classList.value.includes('paying')===false) {
                             if (contenairexercice[i].contentWindow.document.body.querySelector('.outcome')) {
                                 
 
