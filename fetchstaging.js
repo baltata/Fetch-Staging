@@ -154,6 +154,8 @@ function injectHTML(liste) {
                     if (!exercicesAvecBlur[identifiantExercice]) {
                         //console.log("l'exercice est censé être flouté  :", correction)
                             correction.insertAdjacentHTML('beforeend', ' <div class="blur"> <div class="gosabonner">Pour voir cette <b>correction</b> ou <b>recommencer</b> cet exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
+                        correction.style.color = "transparent";
+correction.style.textShadow = "0 0 8px #000";
                             exercicesAvecBlur[identifiantExercice] = true;}
 
 
@@ -181,7 +183,9 @@ if (!isblurred[identifiantExercice]) {
 
                             var correction = contenairexercice[i].contentWindow.document.body.querySelector('.outcome');
                                     correction.insertAdjacentHTML('beforeend', ' <div class="blur"> <div class="gosabonner">Pour voir cette <b>correction</b> ou <b>recommencer</b> cet exercice il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>')
-                                    isblurred[identifiantExercice]=true;
+    correction.style.color = "transparent";
+correction.style.textShadow = "0 0 8px #000";                                
+    isblurred[identifiantExercice]=true;
 }
 
 
