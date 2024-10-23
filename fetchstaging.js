@@ -16,15 +16,20 @@ const output = document.querySelector('.output')
 
 
 
+// Placeholder for values passed from PHP
+var userAttemptCount = window.userAttemptCount || 0;  // Will be passed from PHP
+var nextAttemptTime = window.nextAttemptTime || '';   // Will be passed from PHP (ISO 8601 format)
+
+// Main initialization function
 function init() {
     fetch(url)
         .then(res => res.text())
         .then(rep => {
             //Remove additional text and extract only JSON:
             const jsonData = JSON.parse(rep.substring(47).slice(0, -2));
-           // console.log(rep)
             const colz = [];
             const tr = document.createElement('tr');
+
             //Extract column labels
             jsonData.table.cols.forEach((heading) => {
                 if (heading.label) {
@@ -35,8 +40,7 @@ function init() {
                     tr.appendChild(th);
                 }
             })
-            //   output.appendChild(tr);
-            //extract row data:
+
             jsonData.table.rows.forEach((rowData) => {
                 const row = {};
                 colz.forEach((ele, ind) => {
@@ -47,22 +51,16 @@ function init() {
             processRows(data);
 
             var liste = document.querySelectorAll('.exercice');
-            ;
-            console.log("la liste traitee est :", traitementListe(liste));
-           
-            console.log('la classlist du document est :',document.body.classList.value)
-            console.log('la classlist du document contient paying :',document.body.classList.value.includes('paying'))
 
-            if (document.body.classList.value.includes('paying')===false) {
-               // console.log("la condition est:",document.body.classList.contains("paying")===false)
-//console.log("je suis dans le if")
-            injectHTML(traitementListe(liste));}
-
-
-
+            if (document.body.classList.value.includes('paying') === false) {
+                // Inject blur and start countdown only if user is not premium and has exceeded attempts
+                if (userAttemptCount >= 5) {
+                    injectHTML(traitementListe(liste));
+                    initializeCountdown();
+                }
+            }
         })
-
-
+}
 
         //function that display none all the blurs
 function displayNone() {
@@ -110,23 +108,62 @@ bodyObserver.observe(document.body, { attributes: true });
 
 
 
+
+// Inject HTML for blur and the countdown timer
 function injectHTML(liste) {
     const exercicesAvecBlur = {};
-    const isblurred={};
 
-    // fill the fiches that are already displayed when the page loads
-    var fiche = document.querySelectorAll(".fiche");
-    for (let i = 0; i < fiche.length; ++i) {
-        identifiantFiche = fiche[i].id;
-        //console.log("identifiantFiche est :", identifiantFiche)
-        //console.log("checkStatus(identifiantFiche) est :", checkStatus(identifiantFiche))
-        if (checkStatus(identifiantFiche)) {
-            
-                fiche[i].insertAdjacentHTML('beforeend', ' <div class="blur"> <div class="gosabonner">Pour voir cette <b>fiche</b> il faut un compte premium 👑. <br><a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php"> <div class="whitebutton"><b> Nos offres</b></div></a> </div></div>');
-                exercicesAvecBlur[identifiantFiche] = true;
-            
+    for (let i = 0; i < liste.length; i++) {
+        var identifiantExercice = liste[i].id;
+        if (!checkStatus(identifiantExercice)) {
+            // Inject blur only if user has exceeded the max attempts
+            if (userAttemptCount >= 5) {
+                liste[i].insertAdjacentHTML('beforeend', `
+                    <div class="blur">
+                        <div class="gosabonner">
+                            Tu as atteint le max d'erreurs pour aujourd'hui, attends <span id="countdown"></span>
+                            <br> ou 
+                            <a target="_parent" class="awhite" href="https://galilee.ac/local/membership/plan.php">
+                                <div class="whitebutton"><b>Devenir Premium 👑</b></div>
+                            </a>
+                        </div>
+                    </div>`);
+                exercicesAvecBlur[identifiantExercice] = true;
+            }
         }
     }
+}
+
+// Initialize the countdown timer
+function initializeCountdown() {
+    const countdownElement = document.getElementById('countdown');
+    const nextAttemptDate = new Date(nextAttemptTime);  // Parse the next attempt time from PHP
+
+    function updateCountdown() {
+        const now = new Date();
+        const timeRemaining = nextAttemptDate - now;  // Calculate the time difference
+
+        if (timeRemaining > 0) {
+            // Time calculations for hours, minutes, and seconds
+            const hours = Math.floor((timeRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeRemaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeRemaining % (1000 * 60)) / 1000);
+
+            // Display the countdown in the element
+            countdownElement.innerHTML = `${hours}h ${minutes}m ${seconds}s`;
+        } else {
+            // When the countdown ends
+            countdownElement.innerHTML = "Vous pouvez maintenant réessayer !";
+            clearInterval(countdownInterval);  // Stop the countdown once the time is up
+        }
+    }
+
+    // Update the countdown every second
+    const countdownInterval = setInterval(updateCountdown, 1000);
+
+    // Initialize the countdown display immediately
+    updateCountdown();
+}
 
 
 
